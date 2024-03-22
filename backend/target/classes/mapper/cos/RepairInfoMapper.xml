@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cc.mrbird.febs.cos.dao.RepairInfoMapper">
+
+    <!-- 分页查询维修信息 -->
+    <select id="repairInfoByPage" resultType="java.util.LinkedHashMap">
+        SELECT
+        ri.id,
+        ri.code,
+        ri.content,
+        ri.images,
+        ri.worker,
+        ri.repair_type,
+        ri.repair_status AS repairStatus,
+        ri.create_date AS createDate,
+        oi.name,
+        oi.phone,
+        tu.LAST_LOGIN_TIME AS lastTime,
+        hi.address,
+        hi.number,
+        hi.floor,
+        wi.name AS workerName,
+        wi.phone AS workerPhone,
+        wi.image AS workerImage
+        FROM
+        repair_info ri
+        LEFT JOIN t_user tu ON ( tu.USER_ID = ri.user_id )
+        LEFT JOIN owner_info oi ON ( oi.user_id = tu.USER_ID )
+        LEFT JOIN houses_info hi ON ( hi.id = ri.houses_id )
+        LEFT JOIN worker_info wi ON ( wi.id = ri.worker )
+        WHERE
+        1 = 1
+        <if test="repairInfo.name != null and repairInfo.name != ''">
+            AND oi.name LIKE CONCAT('%',#{repairInfo.name},'%')
+        </if>
+        <if test="repairInfo.phone != null and repairInfo.phone != ''">
+            AND oi.phone LIKE CONCAT('%',#{repairInfo.phone},'%')
+        </if>
+        <if test="repairInfo.repairStatus != null">
+            AND ri.repair_status = #{repairInfo.repairStatus}
+        </if>
+        <if test="repairInfo.repairType != null">
+            AND ri.repair_type = #{repairInfo.repairType}
+        </if>
+        <if test="repairInfo.startDate != null and repairInfo.startDate != '' and repairInfo.endDate != null and repairInfo.endDate != ''">
+            AND ri.create_date BETWEEN #{repairInfo.startDate} and #{repairInfo.endDate}
+        </if>
+        ORDER BY ri.create_date
+    </select>
+
+    <!-- 查看维修详情 -->
+    <select id="repairInfoById" resultType="java.util.LinkedHashMap">
+        SELECT
+        ri.id,
+        ri.code,
+        ri.content,
+        ri.images,
+        ri.worker,
+        ri.repair_status AS repairStatus,
+        ri.create_date AS createDate,
+        oi.name,
+        oi.phone,
+        tu.LAST_LOGIN_TIME AS lastTime,
+        hi.address,
+        hi.number,
+        hi.floor,
+        wi.name AS workerName,
+        wi.phone AS workerPhone,
+        wi.image AS workerImage
+        FROM
+        repair_info ri
+        LEFT JOIN t_user tu ON ( tu.USER_ID = ri.user_id )
+        LEFT JOIN owner_info oi ON ( oi.user_id = tu.USER_ID )
+        LEFT JOIN houses_info hi ON ( hi.id = ri.houses_id )
+        LEFT JOIN worker_info wi ON ( wi.id = ri.worker )
+        WHERE
+        1 = 1
+        AND ri.id = #{ repairId }
+    </select>
+
+    <!-- 房间类型销量比率统计 -->
+    <select id="selectTypeRateByMonth" resultType="java.util.LinkedHashMap">
+        select
+        rt.id,
+        rt.type_name,
+        count(oi.id) as count
+        from
+        room_type rt
+        left join room_info ri on
+        (ri.`type` = rt.id)
+        left join order_info oi on
+        (oi.room_code = ri.code
+        <if test="year != null and year != ''">
+            AND DATE_FORMAT(oi.create_date, '%Y') = #{year}
+        </if>
+        <if test="month != null and month != ''">
+            AND DATE_FORMAT(oi.create_date, '%c') = #{month}
+        </if>
+        )
+        where
+        1 = 1
+        group by
+        rt.id
+    </select>
+
+    <!-- 按月统计收益统计 -->
+    <select id="selectPriceByMonth" resultType="java.util.LinkedHashMap">
+        SELECT
+            wi.NAME,
+            count( wi.id ) as num
+        FROM
+            repair_info ri
+                LEFT JOIN worker_info wi ON ( wi.id = ri.worker )
+        WHERE
+            1 = 1
+        <if test="year != null and year != ''">
+            AND DATE_FORMAT(ri.create_date, '%Y') = #{year}
+        </if>
+        <if test="month != null and month != ''">
+            AND DATE_FORMAT(ri.create_date, '%c') = #{month}
+        </if>
+        GROUP BY
+            wi.id
+    </select>
+
+    <!-- 按月统计工单统计 -->
+    <select id="selectOrderNumByMonth" resultType="java.util.LinkedHashMap">
+        select
+        tempDay.date,
+        count(oi.id) as count
+        from
+        (
+        select
+        date
+        from
+        (
+        select
+        DATE_FORMAT(DATE_SUB(last_day(#{checkDate}), interval xc-1 day), '%Y-%m-%d') as date
+        from
+        (
+        select
+        @xi := @xi + 1 as xc
+        from
+        (
+        select
+        1
+        union
+        select
+        2
+        union
+        select
+        3
+        union
+        select
+        4
+        union
+        select
+        5
+        union
+        select
+        6) xc1,
+        (
+        select
+        1
+        union
+        select
+        2
+        union
+        select
+        3
+        union
+        select
+        4
+        union
+        select
+        5
+        union
+        select
+        6) xc2,
+        (
+        select
+        @xi := 0) xc0
+        ) xcxc) x0
+        where
+        x0.date >= (
+        select
+        date_add(#{checkDate}, interval-day(#{checkDate})+ 1 day))) as tempDay
+        left join repair_info oi on
+        (DATE_FORMAT( oi.create_date, '%Y-%m-%d' ) = DATE_FORMAT( tempDay.date, '%Y-%m-%d')
+        <if test="year != null and year != ''">
+            AND DATE_FORMAT(oi.create_date, '%Y') = #{year}
+        </if>
+        <if test="month != null and month != ''">
+            AND DATE_FORMAT(oi.create_date, '%c') = #{month}
+        </if>
+        )
+        where
+        1 = 1
+        group by
+        tempDay.date
+    </select>
+</mapper>
