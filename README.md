@@ -67,7 +67,7 @@ fank
 
 |  |  |
 |---------------------|---------------------|
-| ![](https://fank-bucket-oss.oss-cn-beijing.aliyuncs.com/img/1711108561237.jpg) | ![](https://fank-bucket-oss.oss-cn-beijing.aliyuncs.com/img/1711108777033.jpg) |
+| ![](https://fank-bucket-oss.oss-cn-beijing.aliyuncs.com/img/1711108561237.jpg) | ![](https://fank-bucket-oss.oss-cn-beijing.aliyuncs.com/img/1711108607537.jpg) |
 | ![](https://fank-bucket-oss.oss-cn-beijing.aliyuncs.com/img/1711108529846.jpg) | ![](https://fank-bucket-oss.oss-cn-beijing.aliyuncs.com/img/1711108756731.jpg) |
 | ![](https://fank-bucket-oss.oss-cn-beijing.aliyuncs.com/img/1711108514266.jpg) | ![](https://fank-bucket-oss.oss-cn-beijing.aliyuncs.com/img/1711108737836.jpg) |
 | ![](https://fank-bucket-oss.oss-cn-beijing.aliyuncs.com/img/1711108343613.jpg) | ![](https://fank-bucket-oss.oss-cn-beijing.aliyuncs.com/img/1711108722357.jpg) |
@@ -75,7 +75,6 @@ fank
 | ![](https://fank-bucket-oss.oss-cn-beijing.aliyuncs.com/img/1711108311446.jpg) | ![](https://fank-bucket-oss.oss-cn-beijing.aliyuncs.com/img/1711108693189.jpg) |
 | ![](https://fank-bucket-oss.oss-cn-beijing.aliyuncs.com/img/1711108282508.jpg) | ![](https://fank-bucket-oss.oss-cn-beijing.aliyuncs.com/img/1711108641934.jpg) |
 | ![](https://fank-bucket-oss.oss-cn-beijing.aliyuncs.com/img/1711108807043.jpg) | ![](https://fank-bucket-oss.oss-cn-beijing.aliyuncs.com/img/1711108631605.jpg) |
-| ![](https://fank-bucket-oss.oss-cn-beijing.aliyuncs.com/img/1711108786566.jpg) | ![](https://fank-bucket-oss.oss-cn-beijing.aliyuncs.com/img/1711108607537.jpg) |
 
 #### 演示视频
 暂无视频
