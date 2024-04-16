@@ -39,6 +39,15 @@ public interface RepairInfoMapper extends BaseMapper<RepairInfo> {
     List<LinkedHashMap<String, Object>> selectPriceByMonth(@Param("year") String year, @Param("month") String month, @Param("checkDate") String date);
 
     /**
+     * 按月统计收益统计（社区报修）
+     *
+     * @param year   年份
+     * @param month  月份
+     * @return 结果
+     */
+    List<LinkedHashMap<String, Object>> selectFundPriceByMonth(@Param("year") String year, @Param("month") String month, @Param("checkDate") String date);
+
+    /**
      * 按月统计工单统计
      *
      * @param year   年份
@@ -46,4 +55,13 @@ public interface RepairInfoMapper extends BaseMapper<RepairInfo> {
      * @return 结果
      */
     List<LinkedHashMap<String, Object>> selectOrderNumByMonth(@Param("year") String year, @Param("month") String month, @Param("checkDate") String date);
+
+    /**
+     * 按月统计工单统计（社区报修）
+     *
+     * @param year   年份
+     * @param month  月份
+     * @return 结果
+     */
+    List<LinkedHashMap<String, Object>> selectFundNumByMonthh(@Param("year") String year, @Param("month") String month, @Param("checkDate") String date);
 }

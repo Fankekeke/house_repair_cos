@@ -2,14 +2,21 @@ package cc.mrbird.febs.cos.controller;
 
 
 import cc.mrbird.febs.common.utils.R;
+import cc.mrbird.febs.cos.entity.PaymentManage;
 import cc.mrbird.febs.cos.entity.PaymentRecord;
+import cc.mrbird.febs.cos.entity.RepairRecordInfo;
+import cc.mrbird.febs.cos.service.IPaymentManageService;
 import cc.mrbird.febs.cos.service.IPaymentRecordService;
+import cc.mrbird.febs.cos.service.IRepairRecordInfoService;
 import cn.hutool.core.date.DateUtil;
+import cn.hutool.core.util.NumberUtil;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
@@ -22,6 +29,10 @@ import java.util.List;
 public class PaymentRecordController {
 
     private final IPaymentRecordService paymentRecordService;
+
+    private final IPaymentManageService paymentManagerService;
+
+    private final IRepairRecordInfoService repairRecordInfoService;
 
     /**
      * 分页查询缴纳记录
@@ -41,6 +52,13 @@ public class PaymentRecordController {
      */
     @PostMapping
     public R save(PaymentRecord paymentRecord) {
+        PaymentManage paymentManage = paymentManagerService.getById(paymentRecord.getPaymentId());
+        if (paymentManage != null && paymentRecord.getType().equals(3)) {
+            RepairRecordInfo repairRecordInfo = repairRecordInfoService.getOne(Wrappers.<RepairRecordInfo>lambdaQuery().eq(RepairRecordInfo::getType, 0));
+            BigDecimal amount = NumberUtil.add(repairRecordInfo.getPrice(), paymentManage.getPrice());
+            repairRecordInfo.setPrice(amount);
+            repairRecordInfoService.updateById(repairRecordInfo);
+        }
         paymentRecord.setCreateDate(DateUtil.formatDateTime(new Date()));
         return R.ok(paymentRecordService.save(paymentRecord));
     }

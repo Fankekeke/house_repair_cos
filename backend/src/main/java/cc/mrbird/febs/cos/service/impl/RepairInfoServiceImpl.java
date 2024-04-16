@@ -73,9 +73,17 @@ public class RepairInfoServiceImpl extends ServiceImpl<RepairInfoMapper, RepairI
         List<LinkedHashMap<String, Object>> priceByMonth = baseMapper.selectPriceByMonth(year, month, checkDate);
         result.put("priceByMonth", priceByMonth);
 
+        // 本月维修工统计（社区报修）
+        List<LinkedHashMap<String, Object>> fundPriceByMonth = baseMapper.selectFundPriceByMonth(year, month, checkDate);
+        result.put("fundPriceByMonth", fundPriceByMonth);
+
         // 本月订单
         List<LinkedHashMap<String, Object>> orderNumByMonth = baseMapper.selectOrderNumByMonth(year, month, checkDate);
         result.put("orderNumByMonth", orderNumByMonth);
+
+        // 本月订单（社区报修）
+        List<LinkedHashMap<String, Object>> fundNumByMonth = baseMapper.selectFundNumByMonthh(year, month, checkDate);
+        result.put("fundNumByMonth", fundNumByMonth);
 
         // 修理类型统计
 //        List<LinkedHashMap<String, Object>> typeOrderNumRateByMonth = baseMapper.selectTypeRateByMonth(year, month);

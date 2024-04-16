@@ -30,6 +30,9 @@
         LEFT JOIN worker_info wi ON ( wi.id = ri.worker )
         WHERE
         1 = 1
+        <if test="repairInfo.userId != null and repairInfo.userId != ''">
+            AND oi.user_id = #{repairInfo.name}
+        </if>
         <if test="repairInfo.name != null and repairInfo.name != ''">
             AND oi.name LIKE CONCAT('%',#{repairInfo.name},'%')
         </if>
@@ -45,7 +48,7 @@
         <if test="repairInfo.startDate != null and repairInfo.startDate != '' and repairInfo.endDate != null and repairInfo.endDate != ''">
             AND ri.create_date BETWEEN #{repairInfo.startDate} and #{repairInfo.endDate}
         </if>
-        ORDER BY ri.create_date
+        ORDER BY ri.create_date desc
     </select>
 
     <!-- 查看维修详情 -->
@@ -123,6 +126,26 @@
             wi.id
     </select>
 
+    <!-- 按月统计收益统计（社区报修） -->
+    <select id="selectFundPriceByMonth" resultType="java.util.LinkedHashMap">
+        SELECT
+        wi.NAME,
+        count( wi.id ) as num
+        FROM
+        community_repair_info ri
+        LEFT JOIN worker_info wi ON ( wi.id = ri.staff_id )
+        WHERE
+        1 = 1
+        <if test="year != null and year != ''">
+            AND DATE_FORMAT(ri.create_date, '%Y') = #{year}
+        </if>
+        <if test="month != null and month != ''">
+            AND DATE_FORMAT(ri.create_date, '%c') = #{month}
+        </if>
+        GROUP BY
+        wi.id
+    </select>
+
     <!-- 按月统计工单统计 -->
     <select id="selectOrderNumByMonth" resultType="java.util.LinkedHashMap">
         select
@@ -186,6 +209,83 @@
         select
         date_add(#{checkDate}, interval-day(#{checkDate})+ 1 day))) as tempDay
         left join repair_info oi on
+        (DATE_FORMAT( oi.create_date, '%Y-%m-%d' ) = DATE_FORMAT( tempDay.date, '%Y-%m-%d')
+        <if test="year != null and year != ''">
+            AND DATE_FORMAT(oi.create_date, '%Y') = #{year}
+        </if>
+        <if test="month != null and month != ''">
+            AND DATE_FORMAT(oi.create_date, '%c') = #{month}
+        </if>
+        )
+        where
+        1 = 1
+        group by
+        tempDay.date
+    </select>
+
+    <!-- 按月统计工单统计（社区报修） -->
+    <select id="selectFundNumByMonthh" resultType="java.util.LinkedHashMap">
+        select
+        tempDay.date,
+        count(oi.id) as count
+        from
+        (
+        select
+        date
+        from
+        (
+        select
+        DATE_FORMAT(DATE_SUB(last_day(#{checkDate}), interval xc-1 day), '%Y-%m-%d') as date
+        from
+        (
+        select
+        @xi := @xi + 1 as xc
+        from
+        (
+        select
+        1
+        union
+        select
+        2
+        union
+        select
+        3
+        union
+        select
+        4
+        union
+        select
+        5
+        union
+        select
+        6) xc1,
+        (
+        select
+        1
+        union
+        select
+        2
+        union
+        select
+        3
+        union
+        select
+        4
+        union
+        select
+        5
+        union
+        select
+        6) xc2,
+        (
+        select
+        @xi := 0) xc0
+        ) xcxc) x0
+        where
+        x0.date >= (
+        select
+        date_add(#{checkDate}, interval-day(#{checkDate})+ 1 day))) as tempDay
+        left join community_repair_info oi on
         (DATE_FORMAT( oi.create_date, '%Y-%m-%d' ) = DATE_FORMAT( tempDay.date, '%Y-%m-%d')
         <if test="year != null and year != ''">
             AND DATE_FORMAT(oi.create_date, '%Y') = #{year}
