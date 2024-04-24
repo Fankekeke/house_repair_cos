@@ -226,8 +226,12 @@ export default {
             case '0':
               return <a-tag>未派修</a-tag>
             case '1':
-              return <a-tag color="yellow">维修中</a-tag>
+              return <a-tag color="yellow">审核中</a-tag>
             case '2':
+              return <a-tag color="green">审核通过</a-tag>
+            case '3':
+              return <a-tag color="red">审核驳回</a-tag>
+            case '4':
               return <a-tag color="green">已完成</a-tag>
             default:
               return '- -'

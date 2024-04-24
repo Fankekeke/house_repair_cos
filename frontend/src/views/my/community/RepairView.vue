@@ -4,14 +4,14 @@
       <a-button key="back" @click="onClose">
         关闭
       </a-button>
-      <a-button type="primary" @click="repairDone" v-if="housesData.status == 1">
+      <a-button type="primary" @click="repairDone" v-if="housesData.status == 2">
         维修完成
       </a-button>
     </template>
     <div style="font-size: 13px;font-family: SimHei" v-if="housesData !== null">
       <div style="font-size: 25px;color: #000c17;text-align: center">
         <p v-if="housesData.status == 0">请稍后，正在为您指定维修人员</p>
-        <p v-if="housesData.status == 1">维修人员正在维修中！</p>
+        <p v-if="housesData.status == 2">维修人员正在维修中！</p>
       </div>
       <a-row style="padding-left: 24px;padding-right: 24px;">
         <a-col style="margin-bottom: 15px"><span style="font-size: 15px;font-weight: 650;color: #000c17">基础信息</span></a-col>
@@ -148,7 +148,7 @@ export default {
   },
   methods: {
     repairDone () {
-      this.housesData.status = 2
+      this.housesData.status = 4
       this.$put('/cos/community-repair-info/down', this.housesData).then((r) => {
         this.$emit('success')
       })

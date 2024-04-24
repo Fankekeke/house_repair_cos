@@ -1,7 +1,13 @@
 <template>
   <a-modal v-model="show" title="查看维修信息" @cancel="onClose" :width="800">
     <template slot="footer">
-      <a-button key="back" @click="onClose">
+      <a-button type="primary" key="back1" @click="handleSubmitStatus(2)" v-if="currentUser.roleId == 76 && housesData.status == 1">
+        通过
+      </a-button>
+      <a-button type="danger" key="back2" @click="handleSubmitStatus(3)" v-if="currentUser.roleId == 76 && housesData.status == 1">
+        驳回
+      </a-button>
+      <a-button key="back3" @click="onClose">
         关闭
       </a-button>
     </template>
@@ -45,6 +51,12 @@
       </a-row>
       <br/>
       <a-row style="padding-left: 24px;padding-right: 24px;">
+        <a-col :span="24"><b>支出明细：</b>
+          {{ housesData.remark !== null ? housesData.remark : '- -' }}
+        </a-col>
+      </a-row>
+      <br/>
+      <a-row style="padding-left: 24px;padding-right: 24px;">
         <a-col :span="24">
           <a-upload
             name="avatar"
@@ -79,21 +91,25 @@
         </a-col>
       </a-row>
       <br/>
-      <a-row style="padding-left: 24px;padding-right: 24px;" :gutter="15" v-if="housesData.status == 0">
+      <a-row style="padding-left: 24px;padding-right: 24px;" :gutter="15" v-if="housesData.status == 0 || housesData.status == 3">
         <a-col style="margin-bottom: 15px"><span style="font-size: 15px;font-weight: 650;color: #000c17">基金余额</span></a-col>
         <a-col :span="8">
           {{ max }} 元
         </a-col>
       </a-row>
       <br/>
-      <a-row style="padding-left: 24px;padding-right: 24px;" :gutter="15" v-if="housesData.status == 0">
+      <a-row style="padding-left: 24px;padding-right: 24px;" :gutter="15" v-if="housesData.status == 0 || housesData.status == 3">
         <a-col style="margin-bottom: 15px"><span style="font-size: 15px;font-weight: 650;color: #000c17">维修费用</span></a-col>
         <a-col :span="13">
           <a-input-number style="width: 100%" :min="0" :max="max" v-model="price"/>
         </a-col>
+        <a-col :span="24" style="margin-top: 15px">
+          <div style="font-size: 15px;font-weight: 650;color: #000c17">支出明细</div>
+          <a-textarea :auto-size="{ minRows: 5, maxRows: 6 }" v-model="remark"/>
+        </a-col>
       </a-row>
       <br/>
-      <a-row style="padding-left: 24px;padding-right: 24px;" :gutter="15" v-if="housesData.status == 0">
+      <a-row style="padding-left: 24px;padding-right: 24px;" :gutter="15" v-if="housesData.status == 0 || housesData.status == 3">
         <a-col style="margin-bottom: 15px"><span style="font-size: 15px;font-weight: 650;color: #000c17">更换维修员工</span></a-col>
         <a-col :span="13">
           <a-select v-model="workerId" style="width: 100%">
@@ -169,6 +185,7 @@ export default {
       previewImage: '',
       workerId: null,
       workerList: '',
+      remark: '',
       max: 0,
       price: 0
     }
@@ -219,14 +236,27 @@ export default {
       this.reset()
       this.$emit('close')
     },
+    handleSubmitStatus (status) {
+      let data = Object.assign(this.housesData, {})
+      data.status = status
+      this.$put('/cos/community-repair-info', data).then((r) => {
+        this.workerId = null
+        this.remark = ''
+        this.$emit('success')
+      }).catch(() => {
+        this.loading = false
+      })
+    },
     handleSubmit () {
       let data = Object.assign(this.housesData, {})
       if (this.workerId !== null) {
         data.staffId = this.workerId
         data.price = this.price
+        data.remark = this.remark
         data.status = 1
         this.$put('/cos/community-repair-info', data).then((r) => {
           this.workerId = null
+          this.remark = ''
           this.$emit('success')
         }).catch(() => {
           this.loading = false

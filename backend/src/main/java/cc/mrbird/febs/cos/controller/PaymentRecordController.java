@@ -53,7 +53,7 @@ public class PaymentRecordController {
     @PostMapping
     public R save(PaymentRecord paymentRecord) {
         PaymentManage paymentManage = paymentManagerService.getById(paymentRecord.getPaymentId());
-        if (paymentManage != null && paymentRecord.getType().equals(3)) {
+        if (paymentManage != null && paymentManage.getType().equals(3)) {
             RepairRecordInfo repairRecordInfo = repairRecordInfoService.getOne(Wrappers.<RepairRecordInfo>lambdaQuery().eq(RepairRecordInfo::getType, 0));
             BigDecimal amount = NumberUtil.add(repairRecordInfo.getPrice(), paymentManage.getPrice());
             repairRecordInfo.setPrice(amount);

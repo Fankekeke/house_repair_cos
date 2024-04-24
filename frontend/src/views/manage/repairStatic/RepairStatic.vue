@@ -52,12 +52,12 @@
           <apexchart v-if="!loading" type="donut" height="270" :options="chartOptions3" :series="series3"></apexchart>
         </a-card>
       </a-col>
-<!--      <a-col :span="12">-->
-<!--        <a-card hoverable :bordered="false" style="width: 100%">-->
-<!--          <a-skeleton active v-if="loading" />-->
-<!--          <apexchart v-if="!loading" type="donut" height="270" :options="chartOptions4" :series="series4"></apexchart>-->
-<!--        </a-card>-->
-<!--      </a-col>-->
+      <a-col :span="12">
+        <a-card hoverable :bordered="false" style="width: 100%">
+          <a-skeleton active v-if="loading" />
+          <apexchart v-if="!loading" type="donut" height="270" :options="chartOptions4" :series="series4"></apexchart>
+        </a-card>
+      </a-col>
     </a-row>
   </a-card>
 </template>
@@ -166,7 +166,7 @@ export default {
         },
         labels: [],
         title: {
-          text: '维修工统计',
+          text: '房屋维修统计',
           align: 'left'
         },
         responsive: [{
@@ -189,7 +189,7 @@ export default {
         },
         labels: [],
         title: {
-          text: '销售统计',
+          text: '社区报修统计',
           align: 'left'
         },
         responsive: [{
@@ -231,20 +231,12 @@ export default {
           if (this.chartOptions1.xaxis.categories.length === 0) {
             this.chartOptions1.xaxis.categories = Array.from(r.data.orderNumByMonth, ({days}) => days)
           }
-          let itemData = { name: '订单数', data: Array.from(r.data.orderNumByMonth, ({count}) => count) }
+          let itemData = { name: '房屋维修', data: Array.from(r.data.orderNumByMonth, ({count}) => count) }
+          let item1Data = { name: '社区保险哦i', data: Array.from(r.data.fundNumByMonth, ({count}) => count) }
           values.push(itemData)
+          values.push(item1Data)
           this.series1 = values
         }
-
-        // if (r.data.priceByMonth !== null && r.data.priceByMonth.length !== 0) {
-        //   let values = []
-        //   if (this.chartOptions2.xaxis.categories.length === 0) {
-        //     this.chartOptions2.xaxis.categories = Array.from(r.data.priceByMonth, ({days}) => days)
-        //   }
-        //   let itemData = { name: '交易金额', data: Array.from(r.data.priceByMonth, ({price}) => price) }
-        //   values.push(itemData)
-        //   this.series2 = values
-        // }
 
         this.chartOptions3.labels = []
         this.series3 = []
@@ -252,10 +244,13 @@ export default {
           this.chartOptions3.labels = Array.from(r.data.priceByMonth, ({name}) => name)
           this.series3 = Array.from(r.data.priceByMonth, ({num}) => num)
         }
-        // if (r.data.typePriceRateByMonth !== null && r.data.typePriceRateByMonth.length !== 0) {
-        //   this.chartOptions4.labels = Array.from(r.data.typePriceRateByMonth, ({typeName}) => typeName)
-        //   this.series4 = Array.from(r.data.typePriceRateByMonth, ({count}) => count)
-        // }
+
+        this.chartOptions4.labels = []
+        this.series4 = []
+        if (r.data.fundPriceByMonth !== null && r.data.fundPriceByMonth.length !== 0) {
+          this.chartOptions4.labels = Array.from(r.data.fundPriceByMonth, ({name}) => name)
+          this.series4 = Array.from(r.data.fundPriceByMonth, ({num}) => num)
+        }
         setTimeout(() => {
           this.loading = false
         }, 500)

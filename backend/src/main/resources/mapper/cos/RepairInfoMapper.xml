@@ -136,6 +136,7 @@
         LEFT JOIN worker_info wi ON ( wi.id = ri.staff_id )
         WHERE
         1 = 1
+        and ri.status = '4'
         <if test="year != null and year != ''">
             AND DATE_FORMAT(ri.create_date, '%Y') = #{year}
         </if>
