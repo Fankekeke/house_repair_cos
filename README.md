@@ -1,4 +1,4 @@
-#### 基于SpringBoot + Vue的房屋报修系统
+#### 基于SpringBoot + Vue的房屋社区报修系统
 
 #### 安装环境
 
