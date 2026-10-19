@@ -1,8 +1,17 @@
-#### 基于SpringBoot + Vue的房屋社区报修系统
+![](https://img.shields.io/badge/License-MIT-blue.svg)
 
-房屋维修管理系统、物业报修平台、住宅维修服务系统、智能报修系统、社区维修工单系统
+![](https://img.shields.io/badge/Version-1.0.0-brightgreen.svg)
+
+![](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)
+
+# 基于 SpringBoot + Vue  的房屋报修缴费系统
+
+在线报修 · 一键缴费 · 物业管控 · 社区服务 | 面向物业管理员与业主的一站式智慧社区管理平台
+
+本项目是一套基于 **Spring Boot + Vue** 的房屋报修缴费系统，采用前后端分离架构，覆盖 **管理员（物业）** 与 **业主** 两类核心角色。系统围绕"房屋/楼宇/车位资源管理 → 业主报修 → 工单分配处理 → 费用账单生成 → 在线缴费 → 公告通知 → 社区服务"的完整物业业务闭环设计，打通物业服务全流程，构建高效便捷的智慧社区平台。
 
 #### 安装环境
+️**注意**：请确保您的开发环境已安装以下依赖。
 
 JAVA 环境 
 
@@ -10,77 +19,160 @@ Node.js环境 [https://nodejs.org/en/] 选择14.17
 
 Yarn 打开cmd， 输入npm install -g yarn !!!必须安装完毕nodejs
 
-Mysql 数据库 [https://blog.csdn.net/qq_40303031/article/details/88935262] 一定要把账户和密码记住
+Mysql 数据库 一定要把账户和密码记住
 
 redis
 
-Idea 编译器 [https://blog.csdn.net/weixin_44505194/article/details/104452880]
+Idea 编译器
 
-WebStorm OR VScode 编译器 [https://www.jianshu.com/p/d63b5bae9dff]
+WebStorm OR VScode 编译器
 
 #### 采用技术及功能
 
 后端：SpringBoot、MybatisPlus、MySQL、Redis、
 前端：Vue、Apex、Antd、Axios
-报表：Spread.js
 
-平台前端：vue(框架) + vuex(全局缓存) + rue-router(路由) + axios(请求插件) + apex(图表)  + antd-ui(ui组件)
+平台前端：vue(框架) + vuex(全局缓存) + rue-router(路由) + axios(请求插件) + apex(图表)  + antd-ui(ui组件) + 百度地图 API
 
 平台后台：springboot(框架) + redis(缓存中间件) + shiro(权限中间件) + mybatisplus(orm) + restful风格接口 + mysql(数据库)
 
 开发环境：windows10 or windows7 ， vscode or webstorm ， idea + lambok
 
-1、实现小区信息管理（包括业主信息，楼宇信息，房间信息的管理，业主数量统计，房间数量统计（包括无人居住房与居住））；                                                                                               
-2、实现物业费用缴纳管理（水电煤气清洁电梯停车位物业管理等费用数据管理，能够生成物业缴费的信息报表，缴费记录管理）；
-3、物业项管理（包括水，电，煤气，清洁，消防，停车位等信息的管理）；
-4、物业抄表入库管理（包括根据不同物业项以及业主的统计生成物业报表并将报表入库）；
-5、业主日常管理（包括业主投诉，维修上报，业主评论及建议）；                                                                         
-6、物业抄表入库管理（包括根据不同物业项以及业主的统计生成物业报表并将报表入库）；                                                       
-7、工作人员管理（包括管理员信息，管理人员权限，物业工作人员信息）；              
-8、公告管理（管理人员对相关的物业信息给予公告，包括停电停水暖气等相关信息）。
+---
 
-还有就是人脸识别  百度人工智能云的sdk 
-以及一个梯度上升算法，
-支付的话用支付宝的沙箱，
+## 核心特性
+
+- **在线报修工单流转**：业主在线提交报修申请，管理员审核并分配维修人员，工单状态实时追踪（待处理/处理中/已完成）。
+- **智能缴费与欠费提醒**：自动生成费用账单，支持在线缴费与缴费单下载；欠费弹窗强制提示，醒目展示欠费金额。
+- **资源消耗可视化**：直观展示每户的用水、用电消耗数据，支持历史用量趋势查看。
+- **维修统计分析**：通过 ECharts 图表展示维修工单处理情况、费用支出趋势、工单类型分布等，辅助物业决策。
+- **社区增值服务**：集成天气查询（北京市未来7日预报）、房屋出租信息发布、公告浏览等便民功能。
+---
+
+## 适用场景
+
+- 住宅小区物业管理平台
+- 产业园区/写字楼物业管理系统
+- 社区报修与缴费服务平台
+- 计算机类毕业设计/课程设计项目
+---
+
+## 功能模块概览
+
+## 管理员端（物业后台）
+
+管理员为物业运营中枢，负责全局管控：
+
+### 基础资源管理
+
+- **楼宇管理**：管理小区/园区内楼宇信息，包括楼宇名称、楼栋号、楼层数、单元数、建成年份、状态，支持增删改查。
+- **房屋管理**：管理具体房屋信息，包括房屋编号、所属楼宇、户型、面积、业主ID、房屋状态（自住/出租/空置）、入住时间。
+- **车位管理**：管理停车位信息，包括车位编号、所属区域、车位类型（地上/地下）、面积、关联业主/租户、状态（已租/空闲）。
+
+### 人员与信息管理
+
+- **工作人员**：管理物业内部员工账号及权限，包括员工姓名、工号、手机号、岗位（维修工/客服/财务）、所属部门、账户状态，支持角色权限分配。
+- **业主管理**：管理小区业主基本信息及账号状态，包括业主姓名、手机号、身份证号、关联房屋、账户状态，支持账户冻结/解冻。
+
+### 业务与报修处理
+
+- **维修上报**：查看、审核、分配和处理业主提交的维修请求，包括报修类型（水电/门窗/家电/其他）、报修描述、报修图片、报修时间、分配维修人员、工单状态跟踪。
+- **维修统计**：通过数据统计图表分析维修工单处理情况，包括工单总量、完成率、平均处理时长、费用支出趋势、报修类型分布等。
+
+### 财务与费用管理
+
+- **缴费管理**：生成费用账单（物业费/水费/电费/停车费等），管理收费规则（单价/计费周期），处理业主缴费记录。
+- **缴费记录**：查看和导出所有业主的缴费流水，包括缴费业主、缴费项目、缴费金额、缴费时间、支付方式、状态，支持按时间段/业主筛选导出。
+
+### 系统运营
+
+- **公告管理**：发布物业通知，包括停水停电公告、社区活动、缴费提醒等，支持公告置顶与推送。
+- **房屋出租**：管理小区内的房屋出租信息，包括出租房屋、租金、户型、联系人、发布时间、状态（招租中/已租出）。
+
+## 业主端
+
+业主通过 Web 端/移动端查看房屋信息、办理报修与缴费：
+
+### 个人信息概览
+
+- **房屋信息**：展示业主名下的房屋数量与详细信息（房屋编号、户型、面积、状态）。
+- **资源消耗**：直观展示当前用水消耗（如 160.00 吨）和用电消耗（如 450.00 度），支持历史用量趋势查看。
+- **欠费提醒**：醒目展示未缴费用总额（如 4449.32 元），进入首页时弹窗强制提示"您共欠金额 XXX 元，请尽快缴费"。
+
+### 报修与缴费服务
+
+- **房屋报修**：在线提交报修申请，选择报修类型、填写报修描述、上传报修图片，实时查看工单处理进度（待处理/处理中/已完成）。
+- **在线缴费**：查看待缴费账单，选择缴费项目（物业费/水费/电费/停车费）进行在线支付，支持支付宝/微信支付模拟。
+- **缴费单下载**：下载历史缴费单（PDF 格式），包含缴费明细、金额、时间等信息，方便留存凭证。
+- **支付结果**：查看历史缴费和支付记录，包括缴费项目、缴费金额、缴费时间、支付状态（成功/失败）。
+
+### 房屋管理与出租
+
+- **房屋管理/出租**：管理自己的房屋信息，或发布房屋出租需求（租金、户型、联系方式、房屋描述），支持出租信息上下架。
+
+### 信息接收与社区互动
+
+- **公告信息**：以新闻列表形式浏览物业发布的各类通知和公告，包括停水停电通知、社区活动、缴费提醒等，支持公告详情查看。
+
+### 增值服务（便民功能）
+
+- **天气查询**：提供北京市未来 7 日气温预报、当前天气详情（风向、温度、湿度、空气质量等）以及未来几天的天气趋势，方便业主出行安排。
+
+---
+
+## 项目结构
+
+```text
+pharmacy-dispensing-system/
+├── backend/            # 后端 API 服务
+│   ├── src/
+│   │   ├── controllers/  # 控制器
+│   │   ├── models/       # 数据模型
+│   │   ├── routes/       # 路由
+│   │   └── services/     # 业务逻辑
+│   └── package.json
+├── frontend/           # 前端 Web 应用
+│   ├── src/
+│   │   ├── views/      # 页面视图
+│   │   ├── components/ # 公共组件
+│   │   └── store/      # 状态管理
+│   └── package.json
+├── docs/               # 项目文档与 API 接口说明
+├── LICENSE
+└── README.md
+```
+---
 
 
 #### 前台启动方式
-
 安装所需文件 yarn install 
 运行 yarn run dev
 
-#### 后端启动方式
-
-1.首先启动redis，进入redis目录终端。输入redis-server回车
-2.导入sql文件，修改数据库与redis连接配置
-3.idea中启动后端项目
-
 #### 默认后台账户密码
-
 [管理员]
 admin
-1234qwer
+123456
 
-[业主]
+[用户]
 fank
-1234qwer
+123456
 
 #### 项目截图
-
 |  |  |
 |---------------------|---------------------|
-| ![](https://fank-bucket-oss.oss-cn-beijing.aliyuncs.com/img/1711108561237.jpg) | ![](https://fank-bucket-oss.oss-cn-beijing.aliyuncs.com/img/1711108607537.jpg) |
-| ![](https://fank-bucket-oss.oss-cn-beijing.aliyuncs.com/img/1711108529846.jpg) | ![](https://fank-bucket-oss.oss-cn-beijing.aliyuncs.com/img/1711108756731.jpg) |
-| ![](https://fank-bucket-oss.oss-cn-beijing.aliyuncs.com/img/1711108514266.jpg) | ![](https://fank-bucket-oss.oss-cn-beijing.aliyuncs.com/img/1711108737836.jpg) |
-| ![](https://fank-bucket-oss.oss-cn-beijing.aliyuncs.com/img/1711108343613.jpg) | ![](https://fank-bucket-oss.oss-cn-beijing.aliyuncs.com/img/1711108722357.jpg) |
-| ![](https://fank-bucket-oss.oss-cn-beijing.aliyuncs.com/img/1711108330034.jpg) | ![](https://fank-bucket-oss.oss-cn-beijing.aliyuncs.com/img/1711108709500.jpg) |
-| ![](https://fank-bucket-oss.oss-cn-beijing.aliyuncs.com/img/1711108311446.jpg) | ![](https://fank-bucket-oss.oss-cn-beijing.aliyuncs.com/img/1711108693189.jpg) |
-| ![](https://fank-bucket-oss.oss-cn-beijing.aliyuncs.com/img/1711108282508.jpg) | ![](https://fank-bucket-oss.oss-cn-beijing.aliyuncs.com/img/1711108641934.jpg) |
-| ![](https://fank-bucket-oss.oss-cn-beijing.aliyuncs.com/img/1711108807043.jpg) | ![](https://fank-bucket-oss.oss-cn-beijing.aliyuncs.com/img/1711108631605.jpg) |
-| ![](https://fank-bucket-oss.oss-cn-beijing.aliyuncs.com/work/936e9baf53eb9a217af4f89c616dc19.png) |
+| ![](./assets/image%20(1).png) | ![](./assets/image%20(2).png) |
+| ![](./assets/image%20(3).png) | ![](./assets/image%20(4).png) |
+| ![](./assets/image%20(5).png) | ![](./assets/image%20(6).png) |
+| ![](./assets/image%20(7).png) | ![](./assets/image%20(8).png) |
+| ![](./assets/image%20(9).png) | ![](./assets/image%20(10).png) |
+| ![](./assets/image%20(11).png) | ![](./assets/image%20(12).png) |
+| ![](./assets/image%20(13).png) | ![](./assets/image%20(14).png) |
+| ![](./assets/image%20(15).png) | ![](./assets/image%20(16).png) |
+| ![](./assets/image%20(1).webp) | ![](./assets/image%20(2).webp) |
 
 #### 演示视频
-暂无视频
+
+暂无
 
 #### 获取方式
 
@@ -94,7 +186,10 @@ WeChat: `Storm_Berserker`
 
 > 项目部署调试不好包退！功能逻辑没讲明白包退！
 
+<div align=center><img align="center" src="./assets/product_word.png" alt="fankekeke" /></div>
+
 #### 其它资源
+[2026年-答辩顺利通过-客户评价🀄](https://berserker287.github.io/2026/06/29/2026%E5%B9%B4%E7%AD%94%E8%BE%A9%E9%A1%BA%E5%88%A9%E9%80%9A%E8%BF%87/)
 
 [2025年-答辩顺利通过-客户评价🍜](https://berserker287.github.io/2025/06/18/2025%E5%B9%B4%E7%AD%94%E8%BE%A9%E9%A1%BA%E5%88%A9%E9%80%9A%E8%BF%87/)
 
@@ -112,11 +207,14 @@ WeChat: `Storm_Berserker`
 
 [计算机专业毕业答辩小tips](https://zhuanlan.zhihu.com/p/145911029)
 
-
 #### 接JAVAWEB毕设，纯原创，价格公道，诚信第一
 
 `网站建设、小程序、H5、APP、各种系统 选题+开题报告+任务书+程序定制+安装调试+项目讲解+论文+答辩PPT`
 
 More info: [悲伤的橘子树](https://berserker287.github.io/)
 
-<p><img align="center" src="https://fank-bucket-oss.oss-cn-beijing.aliyuncs.com/img/%E5%90%88%E4%BD%9C%E7%89%A9%E6%96%99%E6%A0%B7%E5%BC%8F%20(3).png" alt="fankekeke" /></p>
+<div align="center"><img align="center" src="./assets/chat_qr_code.png" alt="fankekeke" width=250 /></div>
+
+<p><img align="center" src="./assets/wechat_group.png" alt="fankekeke" /></p>
+
+**感谢查看**
